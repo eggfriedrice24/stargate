@@ -33,7 +33,9 @@
   },
   "packageManager": "pnpm@10.12.3",
   "scripts": {
+    "clean": "rimraf build node_modules pnpm-lock.yaml",
     "build": "tsc",
+    "rebuild": "pnpm clean && pnpm build",
     "start": "node build/index.js",
     "dev": "tsc --watch"
   },
@@ -43,6 +45,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "rimraf": "^6.1.2",
     "typescript": "^5.7.0"
   }
 }
