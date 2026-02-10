@@ -1,9 +1,36 @@
 {
-  "name": "stargate",
+  "name": "stargate-mcp",
   "version": "1.0.0",
-  "description": "A full-featured MCP server with tools, resources, and prompts",
+  "description": "Personal MCP server toolkit - Asana, GitHub, and more integrations for AI agents",
+  "author": "eggfriedrice24",
+  "license": "MIT",
   "type": "module",
   "main": "build/index.js",
+  "bin": {
+    "stargate-mcp": "build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eggfriedrice24/stargate-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eggfriedrice24/stargate-mcp/issues"
+  },
+  "homepage": "https://github.com/eggfriedrice24/stargate-mcp#readme",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "asana",
+    "github",
+    "ai-tools",
+    "automation",
+    "claude",
+    "cursor",
+    "windsurf"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node build/index.js",
