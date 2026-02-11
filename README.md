@@ -27,7 +27,8 @@ Add to your MCP client config:
       "command": "npx",
       "args": ["stargate-mcp"],
       "env": {
-        "ASANA_TOKEN": "your-asana-personal-access-token"
+        "ASANA_TOKEN": "your-asana-personal-access-token",
+        "SLACK_TOKEN": "xoxp-your-slack-user-token"
       }
     }
   }
@@ -49,6 +50,7 @@ Tools are conditionally loaded based on which tokens you provide:
 | Variable | Enables |
 |----------|---------|
 | `ASANA_TOKEN` | Asana task management tools |
+| `SLACK_TOKEN` | Slack messaging tools |
 | `GITHUB_TOKEN` | GitHub tools (coming soon) |
 
 ## Available Tools
@@ -68,6 +70,19 @@ Get your token at: https://app.asana.com/0/developer-console
 | `asana_update_custom_fields` | Update custom fields (estimated/actual time) |
 | `asana_move_task` | Move task to a different section |
 | `asana_add_comment` | Add a comment to a task |
+
+### Slack
+
+Create a Slack App at: https://api.slack.com/apps
+
+Install it to your workspace with a **User Token** (`xoxp-`) so messages appear as you. Required User Token scopes: `channels:read`, `channels:history`, `groups:read`, `groups:history`, `chat:write`.
+
+| Tool | Description |
+|------|-------------|
+| `slack_list_channels` | List Slack channels you can access |
+| `slack_send_message` | Send a message to a channel |
+| `slack_read_messages` | Read recent messages from a channel |
+| `slack_reply_to_thread` | Reply to a message thread |
 
 ## Development
 
