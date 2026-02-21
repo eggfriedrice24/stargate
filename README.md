@@ -28,7 +28,8 @@ Add to your MCP client config:
       "args": ["stargate-mcp"],
       "env": {
         "ASANA_TOKEN": "your-asana-personal-access-token",
-        "SLACK_TOKEN": "xoxp-your-slack-user-token"
+        "SLACK_TOKEN": "xoxp-your-slack-user-token",
+        "GITHUB_TOKEN": "ghp_your-github-personal-access-token"
       }
     }
   }
@@ -51,7 +52,7 @@ Tools are conditionally loaded based on which tokens you provide:
 |----------|---------|
 | `ASANA_TOKEN` | Asana task management tools |
 | `SLACK_TOKEN` | Slack messaging tools |
-| `GITHUB_TOKEN` | GitHub tools (coming soon) |
+| `GITHUB_TOKEN` | GitHub Projects V2 management tools |
 
 ## Available Tools
 
@@ -83,6 +84,25 @@ Install it to your workspace with a **User Token** (`xoxp-`) so messages appear 
 | `slack_send_message` | Send a message to a channel |
 | `slack_read_messages` | Read recent messages from a channel |
 | `slack_reply_to_thread` | Reply to a message thread |
+
+### GitHub Projects
+
+Create a classic Personal Access Token at: https://github.com/settings/tokens
+
+Required scopes: `repo`, `project`, `read:org`
+
+| Tool | Description |
+|------|-------------|
+| `github_list_projects` | List Projects V2 for a user or organization |
+| `github_get_project_fields` | Get all fields (Status options = board columns, custom fields) |
+| `github_list_project_items` | List items on a project board with optional status filter |
+| `github_get_project_item` | Get full details of a single project item |
+| `github_update_project_item_field` | Update any field value — move items between columns by setting Status |
+| `github_add_project_item` | Add an existing issue/PR to a project, or create a draft issue |
+| `github_list_issue_comments` | List comments on an issue |
+| `github_add_issue_comment` | Add a comment to an issue |
+| `github_list_sub_issues` | List sub-issues for a parent issue |
+| `github_update_issue` | Update issue title, body, state, labels, assignees |
 
 ## Development
 

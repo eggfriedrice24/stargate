@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerAsanaTools } from "./asana.js";
+import { registerGithubProjectsTools } from "./github-projects.js";
 import { registerSlackTools } from "./slack.js";
 
 export function registerTools(server: McpServer) {
@@ -17,12 +18,11 @@ export function registerTools(server: McpServer) {
     loaded++;
   }
 
-  // Future integrations:
-  // if (process.env.GITHUB_TOKEN) {
-  //   registerGithubTools(server);
-  //   console.error("✓ GitHub tools enabled");
-  //   loaded++;
-  // }
+  if (process.env.GITHUB_TOKEN) {
+    registerGithubProjectsTools(server);
+    console.error("✓ GitHub Projects tools enabled");
+    loaded++;
+  }
 
   // if (process.env.JIRA_TOKEN) {
   //   registerJiraTools(server);
@@ -34,6 +34,6 @@ export function registerTools(server: McpServer) {
     console.error("⚠ No tools enabled. Set environment variables to enable integrations:");
     console.error("  ASANA_TOKEN  - Enable Asana task management");
     console.error("  SLACK_TOKEN  - Enable Slack messaging");
-    console.error("  GITHUB_TOKEN - Enable GitHub integration (coming soon)");
+    console.error("  GITHUB_TOKEN - Enable GitHub Projects V2 management");
   }
 }
