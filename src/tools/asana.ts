@@ -156,6 +156,93 @@ export function registerAsanaTools(server: McpServer) {
     }
   );
 
+  // Create a task in a project
+  server.tool(
+    "asana_create_task",
+    "Create a new task in an Asana project, optionally in a specific section",
+    {
+      project_gid: z.string().describe("Project GID to add the task to"),
+      section_gid: z.string().optional().describe("Section GID to place the task in"),
+      name: z.string().describe("Task name"),
+      notes: z.string().optional().describe("Task description/notes"),
+      due_on: z.string().optional().describe("Due date in YYYY-MM-DD format"),
+      assignee: z.string().optional().describe("Assignee GID"),
+    },
+    async ({ project_gid, section_gid, name, notes, due_on, assignee }) => {
+      try {
+        const body: Record<string, unknown> = {
+          name,
+          projects: [project_gid],
+        };
+        if (notes !== undefined) body.notes = notes;
+        if (due_on !== undefined) body.due_on = due_on;
+        if (assignee !== undefined) body.assignee = assignee;
+
+        const task = await asanaRequest("/tasks", "POST", body) as { gid: string };
+
+        if (section_gid) {
+          await asanaRequest(`/sections/${section_gid}/addTask`, "POST", {
+            task: task.gid,
+          });
+        }
+
+        return {
+          content: [
+            {
+              type: "text" as const,
+              text: `Task created:\n${JSON.stringify(task, null, 2)}`,
+            },
+          ],
+        };
+      } catch (error) {
+        return {
+          content: [{ type: "text" as const, text: `Error: ${error}` }],
+          isError: true,
+        };
+      }
+    }
+  );
+
+  // Create a subtask under a parent task
+  server.tool(
+    "asana_create_subtask",
+    "Create a subtask under a parent Asana task",
+    {
+      parent_task_gid: z.string().describe("Parent task GID"),
+      name: z.string().describe("Subtask name"),
+      notes: z.string().optional().describe("Subtask description/notes"),
+      due_on: z.string().optional().describe("Due date in YYYY-MM-DD format"),
+      assignee: z.string().optional().describe("Assignee GID"),
+    },
+    async ({ parent_task_gid, name, notes, due_on, assignee }) => {
+      try {
+        const body: Record<string, unknown> = { name };
+        if (notes !== undefined) body.notes = notes;
+        if (due_on !== undefined) body.due_on = due_on;
+        if (assignee !== undefined) body.assignee = assignee;
+
+        const subtask = await asanaRequest(
+          `/tasks/${parent_task_gid}/subtasks`,
+          "POST",
+          body
+        );
+        return {
+          content: [
+            {
+              type: "text" as const,
+              text: `Subtask created:\n${JSON.stringify(subtask, null, 2)}`,
+            },
+          ],
+        };
+      } catch (error) {
+        return {
+          content: [{ type: "text" as const, text: `Error: ${error}` }],
+          isError: true,
+        };
+      }
+    }
+  );
+
   // Update custom fields (for estimated/actual time)
   server.tool(
     "asana_update_custom_fields",
