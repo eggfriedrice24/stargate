@@ -243,6 +243,33 @@ export function registerAsanaTools(server: McpServer) {
     }
   );
 
+  // List comments (stories) on a task
+  server.tool(
+    "asana_list_task_comments",
+    "List comments on an Asana task",
+    {
+      task_gid: z.string().describe("Task GID"),
+    },
+    async ({ task_gid }) => {
+      try {
+        const stories = await asanaRequest(
+          `/tasks/${task_gid}/stories?opt_fields=gid,created_at,created_by.name,text,type,resource_subtype`
+        );
+        const comments = Array.isArray(stories)
+          ? (stories as Array<{ type?: string }>).filter((s) => s.type === "comment")
+          : stories;
+        return {
+          content: [{ type: "text" as const, text: JSON.stringify(comments, null, 2) }],
+        };
+      } catch (error) {
+        return {
+          content: [{ type: "text" as const, text: `Error: ${error}` }],
+          isError: true,
+        };
+      }
+    }
+  );
+
   // Update custom fields (for estimated/actual time)
   server.tool(
     "asana_update_custom_fields",
